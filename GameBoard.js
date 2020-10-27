@@ -1,16 +1,17 @@
 import { GRID_SIZE, CELL_SIZE, OBJECT_TYPE, CLASS_LIST } from "./setup";
 
 class GameBoard {
-  construtor(DOMGrid) {
+  constructor(DOMGrid) {
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid = DOMGrid;
   }
 
   showGameStatus(gameWin) {
+    // Create and show game win or game over
     const div = document.createElement("div");
     div.classList.add("game-status");
-    div.innerHTML = `${gamewin ? "WIN!" : "GAME OVER!"}`;
+    div.innerHTML = `${gameWin ? "WIN!" : "GAME OVER!"}`;
     this.DOMGrid.appendChild(div);
   }
 
@@ -18,19 +19,18 @@ class GameBoard {
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid.innerHTML = "";
-    this.DOMGrid.style.cssText = `grid-template-columns: repeat(${GRID_SIZE}, ${CELL_SIZE}px;`;
+    // First set correct amount of columns based on Grid Size and Cell Size
+    this.DOMGrid.style.cssText = `grid-template-columns: repeat(${GRID_SIZE}, ${CELL_SIZE}px);`;
 
     level.forEach((square) => {
       const div = document.createElement("div");
       div.classList.add("square", CLASS_LIST[square]);
       div.style.cssText = `width: ${CELL_SIZE}px; height: ${CELL_SIZE}px;`;
-
       this.DOMGrid.appendChild(div);
       this.grid.push(div);
 
-      if (CLASS_LIST[square] === OBJECT_TYPE.DOT) {
-        this.dotCount++;
-      }
+      // Add dots
+      if (CLASS_LIST[square] === OBJECT_TYPE.DOT) this.dotCount++;
     });
   }
 
@@ -41,7 +41,7 @@ class GameBoard {
   removeObject(pos, classes) {
     this.grid[pos].classList.remove(...classes);
   }
-
+  // Can have an arrow function here cause of this binding
   objectExist(pos, object) {
     return this.grid[pos].classList.contains(object);
   }
@@ -49,4 +49,12 @@ class GameBoard {
   rotateDiv(pos, deg) {
     this.grid[pos].style.transform = `rotate(${deg}deg)`;
   }
+
+  static createGameBoard(DOMGrid, level) {
+    const board = new this(DOMGrid);
+    board.createGrid(level);
+    return board;
+  }
 }
+
+export default GameBoard;

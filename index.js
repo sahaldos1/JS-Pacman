@@ -2,6 +2,7 @@ import { Level, Object_type, LEVEL } from "./setup";
 
 //Classes
 import GameBoard from "./GameBoard";
+import Pacman from "./Pacman";
 
 //Dom elements
 const gameGrid = document.querySelector("#game");
@@ -27,3 +28,5 @@ function checkPositon(pacman, ghosts) {}
 function gameLoop(pacman, ghosts) {}
 
 function startGame() {}
+
+//Initialize

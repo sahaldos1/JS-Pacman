@@ -23,7 +23,17 @@ let gameWin = false;
 let powerPillActive = false;
 let powerPillTimer = null;
 
-function gameOver(pacman, grid) {}
+function gameOver(pacman, grid) {
+  document.removeEventListener("keydown", (e) =>
+    pacman.handleKeyInput(e, gameBoard.objectExist)
+  );
+
+  gameBoard.showGameStatus(gameWin);
+
+  clearInterval(timer);
+
+  startButton.classList.remove("hide");
+}
 
 function checkCollision(pacman, ghosts) {
   const collidedGhost = ghosts.find((ghost) => pacman.pos === ghost.pos);

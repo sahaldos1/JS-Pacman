@@ -1,11 +1,12 @@
 import { DIRECTIONS, OBJECT_TYPE } from "./setup";
+import { randomMovement } from "./ghostmoves";
 
 class Ghost {
-  constructor(speed, startpos, movement, name) {
+  constructor(speed = 5, startPos, movement, name) {
     this.name = name;
     this.movement = movement;
-    this.startPos = startpos;
-    this.pos = this.startPos;
+    this.startPos = startPos;
+    this.pos = startPos;
     this.dir = DIRECTIONS.ArrowRight;
     this.speed = speed;
     this.timer = 0;
@@ -19,10 +20,10 @@ class Ghost {
       return true;
     }
     this.timer++;
-    return false;
   }
 
   getNextMove(objectExist) {
+    // Call move algoritm here
     const { nextMovePos, direction } = this.movement(
       this.pos,
       this.dir,
@@ -33,14 +34,11 @@ class Ghost {
 
   makeMove() {
     const classesToRemove = [OBJECT_TYPE.GHOST, OBJECT_TYPE.SCARED, this.name];
+    let classesToAdd = [OBJECT_TYPE.GHOST, this.name];
 
-    let classesToAdd = [OBJECT_TYPE.Ghost, this.name];
+    if (this.isScared) classesToAdd = [...classesToAdd, OBJECT_TYPE.SCARED];
 
-    if (this.isScared) {
-      classesToAdd = [...classesToAdd, OBJECT_TYPE.SCARED];
-    }
-
-    return { classesToAdd, classesToRemove };
+    return { classesToRemove, classesToAdd };
   }
 
   setNewPos(nextMovePos, direction) {
@@ -48,3 +46,5 @@ class Ghost {
     this.dir = direction;
   }
 }
+
+export default Ghost;

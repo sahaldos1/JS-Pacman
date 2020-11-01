@@ -677,6 +677,25 @@ function gameLoop(pacman, ghosts) {
     gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
     gameBoard.dotCount--;
     score += 10;
+  } //check if pacman eats a powerPill
+
+
+  if (gameBoard.objectExist(pacman.pos, _setup.OBJECT_TYPE.PILL)) {
+    gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]);
+    pacman.powerPill = true;
+    score += 50;
+    clearTimeout(powerPillTimer);
+    powerPillTimer = setTimeout(function () {
+      return pacman.powerPill = false;
+    }, POWER_PILL_TIME);
+  } // Change ghosts into scare mode if powerpill eaten
+
+
+  if (pacman.powerPill !== powerPillActive) {
+    powerPillActive = pacman.powerPill;
+    ghosts.forEach(function (ghost) {
+      return ghost.isScared = pacman.powerPill;
+    });
   }
 }
 

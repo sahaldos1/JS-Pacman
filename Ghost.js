@@ -1,5 +1,4 @@
 import { DIRECTIONS, OBJECT_TYPE } from "./setup";
-import { randomMovement } from "./ghostmoves";
 
 class Ghost {
   constructor(speed = 5, startPos, movement, name) {
@@ -48,3 +47,25 @@ class Ghost {
 }
 
 export default Ghost;
+
+// Primitive random movement.
+export function randomMovement(position, direction, objectExist) {
+  let dir = direction;
+  let nextMovePos = position + dir.movement;
+  // Create an array from the diretions objects keys
+  const keys = Object.keys(DIRECTIONS);
+
+  while (
+    objectExist(nextMovePos, OBJECT_TYPE.WALL) ||
+    objectExist(nextMovePos, OBJECT_TYPE.GHOST)
+  ) {
+    // Get a random key from that array
+    const key = keys[Math.floor(Math.random() * keys.length)];
+    // Set the new direction
+    dir = DIRECTIONS[key];
+    // Set the next move
+    nextMovePos = position + dir.movement;
+  }
+
+  return { nextMovePos, direction: dir };
+}

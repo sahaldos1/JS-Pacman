@@ -636,7 +636,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 //Dom elements
 var gameGrid = document.querySelector("#game");
 var scoreTable = document.querySelector("#score");
-var startButton = document.querySelector("#start-button"); //Game constants
+var startButton = document.querySelector("#start-button");
+var instructionButton = document.querySelector("#instructions-button"); //Game constants
 
 var POWER_PILL_TIME = 10000; //ms
 
@@ -664,6 +665,7 @@ function gameOver(pacman, grid) {
   gameBoard.showGameStatus(gameWin);
   clearInterval(timer);
   startButton.classList.remove("hide");
+  instructionButton.classList.remove("hide");
 }
 
 function checkCollision(pacman, ghosts) {
@@ -730,13 +732,39 @@ function gameLoop(pacman, ghosts) {
   scoreTable.innerHTML = score;
 }
 
+function getInstructions() {
+  // Get the modal
+  var modal = document.getElementById("myModal"); // Get the button that opens the modal
+
+  var btn = document.getElementById("instructions-button"); // Get the <span> element that closes the modal
+
+  var span = document.getElementsByClassName("close")[0]; // When the user clicks on the button, open the modal
+
+  btn.onclick = function () {
+    modal.style.display = "block";
+  }; // When the user clicks on <span> (x), close the modal
+
+
+  span.onclick = function () {
+    modal.style.display = "none";
+  }; // When the user clicks anywhere outside of the modal, close it
+
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+}
+
 function startGame() {
   playAudio(_game_start.default);
   gameWin = false;
   powerPillActive = false;
   score = 0; //hide start button at start of game and reset previous values
 
-  startButton.classList.add("hide"); //create the game baord
+  startButton.classList.add("hide");
+  instructionButton.classList.add("hide"); //create the game baord
 
   gameBoard.createGrid(_setup.LEVEL); //create and put pacman on the grid
 
@@ -754,6 +782,7 @@ function startGame() {
 
 
 startButton.addEventListener("click", startGame);
+instructionButton.addEventListener("click", getInstructions);
 },{"./setup":"setup.js","./Ghost":"Ghost.js","./GameBoard":"GameBoard.js","./Pacman":"Pacman.js","./sounds/munch.wav":"sounds/munch.wav","./sounds/pill.wav":"sounds/pill.wav","./sounds/game_start.wav":"sounds/game_start.wav","./sounds/death.wav":"sounds/death.wav","./sounds/eat_ghost.wav":"sounds/eat_ghost.wav"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -782,7 +811,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51307" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50431" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

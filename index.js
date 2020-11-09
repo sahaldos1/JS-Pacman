@@ -17,6 +17,7 @@ import soundGhost from "./sounds/eat_ghost.wav";
 const gameGrid = document.querySelector("#game");
 const scoreTable = document.querySelector("#score");
 const startButton = document.querySelector("#start-button");
+const instructionButton = document.querySelector("#instructions-button");
 
 //Game constants
 const POWER_PILL_TIME = 10000; //ms
@@ -47,6 +48,7 @@ function gameOver(pacman, grid) {
   clearInterval(timer);
 
   startButton.classList.remove("hide");
+  instructionButton.classList.remove("hide");
 }
 
 function checkCollision(pacman, ghosts) {
@@ -118,6 +120,34 @@ function gameLoop(pacman, ghosts) {
   scoreTable.innerHTML = score;
 }
 
+function getInstructions() {
+  // Get the modal
+  var modal = document.getElementById("myModal");
+
+  // Get the button that opens the modal
+  var btn = document.getElementById("instructions-button");
+
+  // Get the <span> element that closes the modal
+  var span = document.getElementsByClassName("close")[0];
+
+  // When the user clicks on the button, open the modal
+  btn.onclick = function () {
+    modal.style.display = "block";
+  };
+
+  // When the user clicks on <span> (x), close the modal
+  span.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+}
+
 function startGame() {
   playAudio(soundGameStart);
   gameWin = false;
@@ -126,6 +156,7 @@ function startGame() {
 
   //hide start button at start of game and reset previous values
   startButton.classList.add("hide");
+  instructionButton.classList.add("hide");
 
   //create the game baord
   gameBoard.createGrid(LEVEL);
@@ -152,3 +183,5 @@ function startGame() {
 //Initialize game
 
 startButton.addEventListener("click", startGame);
+
+instructionButton.addEventListener("click", getInstructions);

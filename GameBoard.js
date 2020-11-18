@@ -1,25 +1,19 @@
-import { GRID_SIZE, CELL_SIZE, OBJECT_TYPE, CLASS_LIST } from "./setup";
+import { GRID_SIZE, CELL_SIZE, OBJECT_TYPE, CLASS_LIST } from "./basics";
 
 class GameBoard {
+  //basic constructor
   constructor(DOMGrid) {
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid = DOMGrid;
   }
 
-  showGameStatus(gameWin) {
-    // Create and show game win or game over
-    const div = document.createElement("div");
-    div.classList.add("game-status");
-    div.innerHTML = `${gameWin ? "WIN!" : "GAME OVER!"}`;
-    this.DOMGrid.appendChild(div);
-  }
-
+  //create a gameboard with the hardcoded gameboard that's passed in
   createGrid(level) {
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid.innerHTML = "";
-    // First set correct amount of columns based on Grid Size and Cell Size
+    // First set correct amount of columns and rows based on Grid Size and Cell Size
     this.DOMGrid.style.cssText = `grid-template-columns: repeat(${GRID_SIZE}, ${CELL_SIZE}px);`;
 
     level.forEach((square) => {
@@ -34,23 +28,13 @@ class GameBoard {
     });
   }
 
+  //allows us to add objects on to the grid
   addObject(pos, classes) {
+    //pos is the position and classes is just the class of the object to be added
     this.grid[pos].classList.add(...classes);
   }
 
-  removeObject(pos, classes) {
-    this.grid[pos].classList.remove(...classes);
-  }
-
-  // Can have an arrow function here cause of this binding
-  objectExist = (pos, object) => {
-    return this.grid[pos].classList.contains(object);
-  };
-
-  rotateDiv(pos, deg) {
-    this.grid[pos].style.transform = `rotate(${deg}deg)`;
-  }
-
+  //creates a gameboard
   static createGameBoard(DOMGrid, level) {
     const board = new this(DOMGrid);
     board.createGrid(level);

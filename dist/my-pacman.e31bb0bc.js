@@ -117,57 +117,36 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"setup.js":[function(require,module,exports) {
+})({"basics.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.DIRECTIONS = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
+exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
+//size of gameboard
 var GRID_SIZE = 20;
 exports.GRID_SIZE = GRID_SIZE;
-var CELL_SIZE = 20;
+var CELL_SIZE = 20; //various kinds of objects
+
 exports.CELL_SIZE = CELL_SIZE;
-var DIRECTIONS = {
-  ArrowLeft: {
-    code: 37,
-    movement: -1,
-    rotation: 180
-  },
-  ArrowUp: {
-    code: 38,
-    movement: -GRID_SIZE,
-    rotation: 270
-  },
-  ArrowRight: {
-    code: 39,
-    movement: 1,
-    rotation: 0
-  },
-  ArrowDown: {
-    code: 40,
-    movement: GRID_SIZE,
-    rotation: 90
-  }
-};
-exports.DIRECTIONS = DIRECTIONS;
 var OBJECT_TYPE = {
-  BLANK: 'blank',
-  WALL: 'wall',
-  DOT: 'dot',
-  BLINKY: 'blinky',
-  PINKY: 'pinky',
-  INKY: 'inky',
-  CLYDE: 'clyde',
-  PILL: 'pill',
-  PACMAN: 'pacman',
-  GHOST: 'ghost',
-  SCARED: 'scared',
-  GHOSTLAIR: 'lair'
+  BLANK: "blank",
+  WALL: "wall",
+  DOT: "dot",
+  BLINKY: "blinky",
+  PINKY: "pinky",
+  INKY: "inky",
+  CLYDE: "clyde",
+  PILL: "pill",
+  PACMAN: "pacman",
+  GHOST: "ghost",
+  SCARED: "scared",
+  GHOSTLAIR: "lair"
 }; // Lookup array for classes
 
 exports.OBJECT_TYPE = OBJECT_TYPE;
-var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_TYPE.BLINKY, OBJECT_TYPE.PINKY, OBJECT_TYPE.INKY, OBJECT_TYPE.CLYDE, OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; // prettier-ignore
+var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_TYPE.BLINKY, OBJECT_TYPE.PINKY, OBJECT_TYPE.INKY, OBJECT_TYPE.CLYDE, OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; // hard coded game board
 
 exports.CLASS_LIST = CLASS_LIST;
 var LEVEL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 2, 2, 2, 1, 9, 9, 9, 9, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -257,23 +236,6 @@ function _createClass(Constructor, protoProps, staticProps) {
 }
 
 module.exports = _createClass;
-},{}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
 },{}],"GameBoard.js":[function(require,module,exports) {
 "use strict";
 
@@ -288,77 +250,53 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
-var _setup = require("./setup");
+var _basics = require("./basics");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var GameBoard = /*#__PURE__*/function () {
+  //basic constructor
   function GameBoard(DOMGrid) {
-    var _this = this;
-
     (0, _classCallCheck2.default)(this, GameBoard);
-    (0, _defineProperty2.default)(this, "objectExist", function (pos, object) {
-      return _this.grid[pos].classList.contains(object);
-    });
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid = DOMGrid;
-  }
+  } //create a gameboard with the hardcoded gameboard that's passed in
+
 
   (0, _createClass2.default)(GameBoard, [{
-    key: "showGameStatus",
-    value: function showGameStatus(gameWin) {
-      // Create and show game win or game over
-      var div = document.createElement("div");
-      div.classList.add("game-status");
-      div.innerHTML = "".concat(gameWin ? "WIN!" : "GAME OVER!");
-      this.DOMGrid.appendChild(div);
-    }
-  }, {
     key: "createGrid",
     value: function createGrid(level) {
-      var _this2 = this;
+      var _this = this;
 
       this.dotCount = 0;
       this.grid = [];
-      this.DOMGrid.innerHTML = ""; // First set correct amount of columns based on Grid Size and Cell Size
+      this.DOMGrid.innerHTML = ""; // First set correct amount of columns and rows based on Grid Size and Cell Size
 
-      this.DOMGrid.style.cssText = "grid-template-columns: repeat(".concat(_setup.GRID_SIZE, ", ").concat(_setup.CELL_SIZE, "px);");
+      this.DOMGrid.style.cssText = "grid-template-columns: repeat(".concat(_basics.GRID_SIZE, ", ").concat(_basics.CELL_SIZE, "px);");
       level.forEach(function (square) {
         var div = document.createElement("div");
-        div.classList.add("square", _setup.CLASS_LIST[square]);
-        div.style.cssText = "width: ".concat(_setup.CELL_SIZE, "px; height: ").concat(_setup.CELL_SIZE, "px;");
+        div.classList.add("square", _basics.CLASS_LIST[square]);
+        div.style.cssText = "width: ".concat(_basics.CELL_SIZE, "px; height: ").concat(_basics.CELL_SIZE, "px;");
 
-        _this2.DOMGrid.appendChild(div);
+        _this.DOMGrid.appendChild(div);
 
-        _this2.grid.push(div); // Add dots
+        _this.grid.push(div); // Add dots
 
 
-        if (_setup.CLASS_LIST[square] === _setup.OBJECT_TYPE.DOT) _this2.dotCount++;
+        if (_basics.CLASS_LIST[square] === _basics.OBJECT_TYPE.DOT) _this.dotCount++;
       });
-    }
+    } //allows us to add objects on to the grid
+
   }, {
     key: "addObject",
     value: function addObject(pos, classes) {
       var _this$grid$pos$classL;
 
+      //pos is the position and classes is just the class of the object to be added
       (_this$grid$pos$classL = this.grid[pos].classList).add.apply(_this$grid$pos$classL, (0, _toConsumableArray2.default)(classes));
-    }
-  }, {
-    key: "removeObject",
-    value: function removeObject(pos, classes) {
-      var _this$grid$pos$classL2;
+    } //creates a gameboard
 
-      (_this$grid$pos$classL2 = this.grid[pos].classList).remove.apply(_this$grid$pos$classL2, (0, _toConsumableArray2.default)(classes));
-    } // Can have an arrow function here cause of this binding
-
-  }, {
-    key: "rotateDiv",
-    value: function rotateDiv(pos, deg) {
-      this.grid[pos].style.transform = "rotate(".concat(deg, "deg)");
-    }
   }], [{
     key: "createGameBoard",
     value: function createGameBoard(DOMGrid, level) {
@@ -372,7 +310,7 @@ var GameBoard = /*#__PURE__*/function () {
 
 var _default = GameBoard;
 exports.default = _default;
-},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","./setup":"setup.js"}],"Pacman.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","./basics":"basics.js"}],"Pacman.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -384,14 +322,12 @@ var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/cl
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Pacman = function Pacman(speed, startPos) {
+var Pacman = //constructor for pacman
+function Pacman(speed, startPos) {
   (0, _classCallCheck2.default)(this, Pacman);
+  //start pos is just where pacman starts in the grid and speed is how fast he will move
   this.pos = startPos;
   this.speed = speed;
-  this.dir = null;
-  this.timer = 0;
-  this.powerPill = false;
-  this.rotation = true;
 };
 
 var _default = Pacman;
@@ -399,7 +335,7 @@ exports.default = _default;
 },{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
-var _setup = require("./setup");
+var _basics = require("./basics");
 
 var _GameBoard = _interopRequireDefault(require("./GameBoard"));
 
@@ -414,7 +350,7 @@ var scoreTable = document.querySelector("#score");
 var startButton = document.querySelector("#start-button");
 var instructionButton = document.querySelector("#instructions-button"); //Game constants
 
-var gameBoard = _GameBoard.default.createGameBoard(gameGrid, _setup.LEVEL); //Initial setup
+var gameBoard = _GameBoard.default.createGameBoard(gameGrid, _basics.LEVEL); //Initial setup
 
 
 var score = 0;
@@ -452,16 +388,16 @@ function startGame() {
   startButton.classList.add("hide");
   instructionButton.classList.add("hide"); //create the game baord
 
-  gameBoard.createGrid(_setup.LEVEL); //create and put pacman on the grid
+  gameBoard.createGrid(_basics.LEVEL); //create and put pacman on the grid
 
   var pacman = new _Pacman.default(2, 287);
-  gameBoard.addObject(287, [_setup.OBJECT_TYPE.PACMAN]);
+  gameBoard.addObject(287, [_basics.OBJECT_TYPE.PACMAN]);
 } //Initialize game
 
 
 startButton.addEventListener("click", startGame);
 instructionButton.addEventListener("click", getInstructions);
-},{"./setup":"setup.js","./GameBoard":"GameBoard.js","./Pacman":"Pacman.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./basics":"basics.js","./GameBoard":"GameBoard.js","./Pacman":"Pacman.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -489,7 +425,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51700" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52130" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

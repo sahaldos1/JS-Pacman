@@ -1,11 +1,9 @@
 class Pacman {
+  //constructor for pacman
   constructor(speed, startPos) {
+    //start pos is just where pacman starts in the grid and speed is how fast he will move
     this.pos = startPos;
     this.speed = speed;
-    this.dir = null;
-    this.timer = 0;
-    this.powerPill = false;
-    this.rotation = true;
   }
 }
 

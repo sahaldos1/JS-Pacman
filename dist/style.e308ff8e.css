@@ -55,6 +55,10 @@ body {
   margin-top: 20px;
 }
 
+#instructions-button {
+  margin-top: 20px;
+}
+
 .hide {
   display: none;
 }
@@ -75,64 +79,6 @@ body {
   background: white;
   border: 8px solid black;
   border-radius: 50%;
-}
-
-.pill {
-  background: white;
-  border: 5px solid black;
-  border-radius: 50%;
-}
-
-.ghost {
-  position: relative;
-  border-radius: 10px 10px 2px 2px;
-  border: none;
-}
-
-.ghost::before {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: black;
-  border-radius: 50%;
-  left: 3px;
-  top: 5px;
-  border: 2px solid white;
-}
-
-.ghost::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: black;
-  border-radius: 50%;
-  right: 3px;
-  top: 5px;
-  border: 2px solid white;
-}
-
-.scared {
-  background: blue !important;
-}
-
-.blinky {
-  background: red;
-}
-
-.pinky {
-  background: pink;
-}
-
-.inky {
-  background: cyan;
-}
-
-.clyde {
-  background: orange;
 }
 
 .pacman {

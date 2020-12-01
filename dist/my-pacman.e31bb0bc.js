@@ -123,13 +123,532 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
-//size of gameboard
-var GRID_SIZE = 20;
+exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.DIRECTIONS = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
+// //size of gameboard
+// export const GRID_SIZE = 20;
+// export const CELL_SIZE = 20;
+// //various kinds of objects
+// export const OBJECT_TYPE = {
+//   BLANK: "blank",
+//   WALL: "wall",
+//   DOT: "dot",
+//   BLINKY: "blinky",
+//   PINKY: "pinky",
+//   INKY: "inky",
+//   CLYDE: "clyde",
+//   PILL: "pill",
+//   PACMAN: "pacman",
+//   GHOST: "ghost",
+//   SCARED: "scared",
+//   GHOSTLAIR: "lair",
+// };
+// // Lookup array for classes
+// export const CLASS_LIST = [
+//   OBJECT_TYPE.BLANK,
+//   OBJECT_TYPE.WALL,
+//   OBJECT_TYPE.DOT,
+//   OBJECT_TYPE.BLINKY,
+//   OBJECT_TYPE.PINKY,
+//   OBJECT_TYPE.INKY,
+//   OBJECT_TYPE.CLYDE,
+//   OBJECT_TYPE.PILL,
+//   OBJECT_TYPE.PACMAN,
+//   OBJECT_TYPE.GHOSTLAIR,
+// ];
+// // hard coded game board
+// export const LEVEL = [
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   7,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   7,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   0,
+//   0,
+//   0,
+//   1,
+//   2,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   2,
+//   1,
+//   0,
+//   0,
+//   0,
+//   0,
+//   0,
+//   0,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   9,
+//   9,
+//   9,
+//   9,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   0,
+//   0,
+//   0,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   9,
+//   9,
+//   9,
+//   9,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   0,
+//   0,
+//   0,
+//   2,
+//   2,
+//   2,
+//   1,
+//   9,
+//   9,
+//   9,
+//   9,
+//   1,
+//   2,
+//   2,
+//   2,
+//   0,
+//   0,
+//   0,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   9,
+//   9,
+//   9,
+//   9,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   0,
+//   0,
+//   0,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   0,
+//   0,
+//   0,
+//   0,
+//   0,
+//   0,
+//   1,
+//   2,
+//   1,
+//   2,
+//   0,
+//   0,
+//   0,
+//   0,
+//   0,
+//   0,
+//   2,
+//   1,
+//   2,
+//   1,
+//   0,
+//   0,
+//   0,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   7,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   7,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   2,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+//   1,
+// ];
+//the amount of columns in the grid
+var GRID_SIZE = 20; //size of the cells in the grid in pixels
+
 exports.GRID_SIZE = GRID_SIZE;
-var CELL_SIZE = 20; //various kinds of objects
+var CELL_SIZE = 20; //directions corresponding to arrow keys, code is the key entered in, movement is the direction we move in, and rotation is how much pacman should rotate when key is pressed, pacman starts off facing right
 
 exports.CELL_SIZE = CELL_SIZE;
+var DIRECTIONS = {
+  ArrowLeft: {
+    code: 37,
+    movement: -1,
+    rotation: 180
+  },
+  ArrowUp: {
+    code: 38,
+    movement: -GRID_SIZE,
+    rotation: 270
+  },
+  ArrowRight: {
+    code: 39,
+    movement: 1,
+    rotation: 0
+  },
+  ArrowDown: {
+    code: 40,
+    movement: GRID_SIZE,
+    rotation: 90
+  }
+}; //array to cover the various kinds of objects, used to set different classes for the divs in the game
+
+exports.DIRECTIONS = DIRECTIONS;
 var OBJECT_TYPE = {
   BLANK: "blank",
   WALL: "wall",
@@ -143,10 +662,11 @@ var OBJECT_TYPE = {
   GHOST: "ghost",
   SCARED: "scared",
   GHOSTLAIR: "lair"
-}; // Lookup array for classes
+}; // Lookup array for classes, only used when we create the grid
 
 exports.OBJECT_TYPE = OBJECT_TYPE;
-var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_TYPE.BLINKY, OBJECT_TYPE.PINKY, OBJECT_TYPE.INKY, OBJECT_TYPE.CLYDE, OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; // hard coded game board
+var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_TYPE.BLINKY, OBJECT_TYPE.PINKY, OBJECT_TYPE.INKY, OBJECT_TYPE.CLYDE, OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; //array that represents the gameboard/grid, the numbers correspond with the kind of object they are
+// prettier-ignore
 
 exports.CLASS_LIST = CLASS_LIST;
 var LEVEL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 2, 2, 2, 1, 9, 9, 9, 9, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -254,14 +774,51 @@ var _basics = require("./basics");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import { GRID_SIZE, CELL_SIZE, OBJECT_TYPE, CLASS_LIST } from "./basics";
+// class GameBoard {
+//   //basic constructor
+//   constructor(DOMGrid) {
+//     this.dotCount = 0;
+//     this.grid = [];
+//     this.DOMGrid = DOMGrid;
+//   }
+//   //create a gameboard with the hardcoded gameboard that's passed in
+//   createGrid(level) {
+//     this.dotCount = 0;
+//     this.grid = [];
+//     this.DOMGrid.innerHTML = "";
+//     // First set correct amount of columns and rows based on Grid Size and Cell Size
+//     this.DOMGrid.style.cssText = `grid-template-columns: repeat(${GRID_SIZE}, ${CELL_SIZE}px);`;
+//     level.forEach((square) => {
+//       const div = document.createElement("div");
+//       div.classList.add("square", CLASS_LIST[square]);
+//       div.style.cssText = `width: ${CELL_SIZE}px; height: ${CELL_SIZE}px;`;
+//       this.DOMGrid.appendChild(div);
+//       this.grid.push(div);
+//       // Add dots
+//       if (CLASS_LIST[square] === OBJECT_TYPE.DOT) this.dotCount++;
+//     });
+//   }
+//   //allows us to add objects on to the grid
+//   addObject(pos, classes) {
+//     //pos is the position and classes is just the class of the object to be added
+//     this.grid[pos].classList.add(...classes);
+//   }
+//   //creates a gameboard
+//   static createGameBoard(DOMGrid, level) {
+//     const board = new this(DOMGrid);
+//     board.createGrid(level);
+//     return board;
+//   }
+// }
+// export default GameBoard;
 var GameBoard = /*#__PURE__*/function () {
-  //basic constructor
   function GameBoard(DOMGrid) {
     (0, _classCallCheck2.default)(this, GameBoard);
     this.dotCount = 0;
     this.grid = [];
     this.DOMGrid = DOMGrid;
-  } //create a gameboard with the hardcoded gameboard that's passed in
+  } //method to create grid, called every time game starts. grid is the array of objects and the value at that index is the object at that index
 
 
   (0, _createClass2.default)(GameBoard, [{
@@ -271,11 +828,13 @@ var GameBoard = /*#__PURE__*/function () {
 
       this.dotCount = 0;
       this.grid = [];
-      this.DOMGrid.innerHTML = ""; // First set correct amount of columns and rows based on Grid Size and Cell Size
+      this.DOMGrid.innerHTML = ""; // First set correct amount of columns based on Grid Size and the size of each cell is based on Cell Size
 
-      this.DOMGrid.style.cssText = "grid-template-columns: repeat(".concat(_basics.GRID_SIZE, ", ").concat(_basics.CELL_SIZE, "px);");
+      this.DOMGrid.style.cssText = "grid-template-columns: repeat(".concat(_basics.GRID_SIZE, ", ").concat(_basics.CELL_SIZE, "px);"); //loop through the gaemboard array, and create each element in the array
+
       level.forEach(function (square) {
-        var div = document.createElement("div");
+        var div = document.createElement("div"); //check value of current element and match it to classlist to get what object it's supposed to be
+
         div.classList.add("square", _basics.CLASS_LIST[square]);
         div.style.cssText = "width: ".concat(_basics.CELL_SIZE, "px; height: ").concat(_basics.CELL_SIZE, "px;");
 
@@ -286,21 +845,67 @@ var GameBoard = /*#__PURE__*/function () {
 
         if (_basics.CLASS_LIST[square] === _basics.OBJECT_TYPE.DOT) _this.dotCount++;
       });
-    } //allows us to add objects on to the grid
+    } //takes the position and classes.
 
   }, {
     key: "addObject",
-    value: function addObject(pos, classes) {
+    value: function addObject(pos, object) {
       var _this$grid$pos$classL;
 
-      //pos is the position and classes is just the class of the object to be added
-      (_this$grid$pos$classL = this.grid[pos].classList).add.apply(_this$grid$pos$classL, (0, _toConsumableArray2.default)(classes));
-    } //creates a gameboard
+      //where in the grid we want to apply/add these classes/objects
+      (_this$grid$pos$classL = this.grid[pos].classList).add.apply(_this$grid$pos$classL, (0, _toConsumableArray2.default)(object));
+    }
+  }, {
+    key: "removeObject",
+    value: function removeObject(pos, object) {
+      var _this$grid$pos$classL2;
+
+      //where in the grid we want to remove these classes/objects
+      (_this$grid$pos$classL2 = this.grid[pos].classList).remove.apply(_this$grid$pos$classL2, (0, _toConsumableArray2.default)(object));
+    } // checks to make sure an object exists at that current position
+
+  }, {
+    key: "objectExist",
+    value: function objectExist(pos, object) {
+      return this.grid[pos].classList.contains(object);
+    } //used to rotate pacman on the grid, rotates at postion by the specified amount of degrees
+
+  }, {
+    key: "rotateDiv",
+    value: function rotateDiv(pos, deg) {
+      this.grid[pos].style.transform = "rotate(".concat(deg, "deg)");
+    }
+  }, {
+    key: "moveCharacter",
+    value: function moveCharacter(character) {
+      if (character.shouldMove()) {
+        var _character$getNextMov = character.getNextMove(this.objectExist.bind(this)),
+            nextMovePos = _character$getNextMov.nextMovePos,
+            direction = _character$getNextMov.direction;
+
+        var _character$makeMove = character.makeMove(),
+            classesToRemove = _character$makeMove.classesToRemove,
+            classesToAdd = _character$makeMove.classesToAdd;
+
+        if (character.rotation && nextMovePos !== character.pos) {
+          // Rotate
+          this.rotateDiv(nextMovePos, character.dir.rotation); // Rotate the previous div back
+
+          this.rotateDiv(character.pos, 0);
+        }
+
+        this.removeObject(character.pos, classesToRemove);
+        this.addObject(nextMovePos, classesToAdd);
+        character.setNewPos(nextMovePos, direction);
+      }
+    } //used to initialize class itself, can be called wihtout instantiating the class itself. we create an instance of the class and create the grid and then return the instance.
 
   }], [{
     key: "createGameBoard",
     value: function createGameBoard(DOMGrid, level) {
-      var board = new this(DOMGrid);
+      //creating the empty gameboard using the previously defined constructor
+      var board = new this(DOMGrid); //populate gameboard with the hardcoded array passed in from basics
+
       board.createGrid(level);
       return board;
     }
@@ -310,7 +915,24 @@ var GameBoard = /*#__PURE__*/function () {
 
 var _default = GameBoard;
 exports.default = _default;
-},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","./basics":"basics.js"}],"Pacman.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/toConsumableArray":"node_modules/@babel/runtime/helpers/toConsumableArray.js","@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","./basics":"basics.js"}],"node_modules/@babel/runtime/helpers/defineProperty.js":[function(require,module,exports) {
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+},{}],"Pacman.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -320,19 +942,111 @@ exports.default = void 0;
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _basics = require("./basics");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Pacman = //constructor for pacman
-function Pacman(speed, startPos) {
-  (0, _classCallCheck2.default)(this, Pacman);
-  //start pos is just where pacman starts in the grid and speed is how fast he will move
-  this.pos = startPos;
-  this.speed = speed;
-};
+// class Pacman {
+//   //constructor for pacman
+//   constructor(speed, startPos) {
+//     //start pos is just where pacman starts in the grid and speed is how fast he will move
+//     this.pos = startPos;
+//     this.speed = speed;
+//   }
+// }
+// export default Pacman;
+var Pacman = /*#__PURE__*/function () {
+  //timer is after how long pacman is rendered and controls the speed of pacman
+  function Pacman(speed, startPos) {
+    var _this = this;
+
+    (0, _classCallCheck2.default)(this, Pacman);
+    (0, _defineProperty2.default)(this, "handleKeyInput", function (e, objectExist) {
+      var dir; //check what keys are pressed, if keys are up down left right
+
+      if (e.keyCode >= 37 && e.keyCode <= 40) {
+        //set direction as the key entered
+        dir = _basics.DIRECTIONS[e.key];
+      } else {
+        //otherwise nothing
+        return;
+      } //make pacman keep moving in the direction selected unless he runs into a wall
+
+
+      var nextMovePos = _this.pos + dir.movement; //if he does, we return nothing and he stops
+
+      if (objectExist(nextMovePos, _basics.OBJECT_TYPE.WALL)) return;
+      _this.dir = dir;
+    });
+    this.pos = startPos;
+    this.speed = speed;
+    this.dir = null;
+    this.timer = 0;
+    this.powerPill = false;
+    this.rotation = true;
+  } //check if  pacman is ready to move or not
+
+
+  (0, _createClass2.default)(Pacman, [{
+    key: "shouldMove",
+    value: function shouldMove() {
+      // Don't move before a key is pressed
+      if (!this.dir) return; //counts from the timer to the speed passed, if the timer equals the speed passed in then the timer resets and pacman can move. This controls how fast pacman will be rendered
+
+      if (this.timer === this.speed) {
+        this.timer = 0;
+        return true;
+      }
+
+      this.timer++;
+    } //object exist from gameboard passed in
+
+  }, {
+    key: "getNextMove",
+    value: function getNextMove(objectExist) {
+      //define next position as being current position of pacman plus the movement value of the key pressed
+      var nextMovePos = this.pos + this.dir.movement; // Do we collide with a wall or the ghost lair?
+
+      if (objectExist(nextMovePos, _basics.OBJECT_TYPE.WALL) || objectExist(nextMovePos, _basics.OBJECT_TYPE.GHOSTLAIR)) {
+        //then we don't move
+        nextMovePos = this.pos;
+      } //otherwise we move, return next move position
+
+
+      return {
+        nextMovePos: nextMovePos,
+        direction: this.dir
+      };
+    }
+  }, {
+    key: "makeMove",
+    value: function makeMove() {
+      //remove pacman from current positon and add him to the new postion
+      var classesToRemove = [_basics.OBJECT_TYPE.PACMAN];
+      var classesToAdd = [_basics.OBJECT_TYPE.PACMAN];
+      return {
+        classesToRemove: classesToRemove,
+        classesToAdd: classesToAdd
+      };
+    } //set new positon of pacman with the next move position
+
+  }, {
+    key: "setNewPos",
+    value: function setNewPos(nextMovePos) {
+      this.pos = nextMovePos;
+    } //take in event and object exists
+
+  }]);
+  return Pacman;
+}();
 
 var _default = Pacman;
 exports.default = _default;
-},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js"}],"index.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"node_modules/@babel/runtime/helpers/defineProperty.js","./basics":"basics.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _basics = require("./basics");
@@ -350,10 +1064,13 @@ var scoreTable = document.querySelector("#score");
 var startButton = document.querySelector("#start-button");
 var instructionButton = document.querySelector("#instructions-button"); //Game constants
 
+var GLOBAL_SPEED = 80; // speed for the gameloop, in ms
+
 var gameBoard = _GameBoard.default.createGameBoard(gameGrid, _basics.LEVEL); //Initial setup
 
 
 var score = 0;
+var timer = null;
 var gameWin = false;
 
 function getInstructions() {
@@ -381,21 +1098,35 @@ function getInstructions() {
   };
 }
 
+function gameLoop(pacman, ghosts) {
+  gameBoard.moveCharacter(pacman);
+} //function is ran when start button is pressed
+
+
 function startGame() {
+  //hide start and instructions button at start of game and reset previous values
   gameWin = false;
-  score = 0; //hide start button at start of game and reset previous values
-
+  score = 0;
   startButton.classList.add("hide");
-  instructionButton.classList.add("hide"); //create the game baord
+  instructionButton.classList.add("hide"); //create the new game grid from the game board each time we start a new game
 
-  gameBoard.createGrid(_basics.LEVEL); //create and put pacman on the grid
+  gameBoard.createGrid(_basics.LEVEL); //create pacman with a speed of two and put on the grid
 
   var pacman = new _Pacman.default(2, 287);
-  gameBoard.addObject(287, [_basics.OBJECT_TYPE.PACMAN]);
-} //Initialize game
+  gameBoard.addObject(287, [_basics.OBJECT_TYPE.PACMAN]); //add event listener for pacman so we can move him with our keyboard
+
+  document.addEventListener("keydown", function (e) {
+    return pacman.handleKeyInput(e, gameBoard.objectExist.bind(gameBoard));
+  }); // Gameloop
+
+  timer = setInterval(function () {
+    return gameLoop(pacman);
+  }, GLOBAL_SPEED);
+} //Initialize game when button is pressed
 
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", startGame); //display instructions when instructions button is pressed
+
 instructionButton.addEventListener("click", getInstructions);
 },{"./basics":"basics.js","./GameBoard":"GameBoard.js","./Pacman":"Pacman.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -425,7 +1156,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52130" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49906" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -11,10 +11,12 @@ const startButton = document.querySelector("#start-button");
 const instructionButton = document.querySelector("#instructions-button");
 
 //Game constants
+const GLOBAL_SPEED = 80; // speed for the gameloop, in ms
 const gameBoard = GameBoard.createGameBoard(gameGrid, LEVEL);
 
 //Initial setup
 let score = 0;
+let timer = null;
 let gameWin = false;
 
 function getInstructions() {
@@ -45,24 +47,39 @@ function getInstructions() {
   };
 }
 
+//game loop handles the movement of characters, it moves the character everytime it completes it's interval
+function gameLoop(pacman, ghosts) {
+  gameBoard.moveCharacter(pacman);
+}
+
+//function is ran when start button is pressed
 function startGame() {
+  //hide start and instructions button at start of game and reset previous values
+
   gameWin = false;
   score = 0;
 
-  //hide start button at start of game and reset previous values
   startButton.classList.add("hide");
   instructionButton.classList.add("hide");
 
-  //create the game baord
+  //create the new game grid from the game board each time we start a new game
   gameBoard.createGrid(LEVEL);
 
-  //create and put pacman on the grid
+  //create pacman with a speed of two and put on the grid
   const pacman = new Pacman(2, 287);
   gameBoard.addObject(287, [OBJECT_TYPE.PACMAN]);
+
+  //add event listener for pacman so we can move him with our keyboard
+  document.addEventListener("keydown", (e) =>
+    pacman.handleKeyInput(e, gameBoard.objectExist.bind(gameBoard))
+  );
+
+  // Gameloop, start the interval that will run the game loop function
+  timer = setInterval(() => gameLoop(pacman), GLOBAL_SPEED);
 }
 
-//Initialize game
-
+//Initialize game when button is pressed
 startButton.addEventListener("click", startGame);
 
+//display instructions when instructions button is pressed
 instructionButton.addEventListener("click", getInstructions);

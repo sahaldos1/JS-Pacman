@@ -47,9 +47,23 @@ function getInstructions() {
   };
 }
 
-//game loop handles the movement of characters, it moves the character everytime it completes it's interval
+//game loop handles the movement of characters, it executes everytime it completes it's interval
 function gameLoop(pacman, ghosts) {
+  //move pacman
   gameBoard.moveCharacter(pacman);
+
+  //let pacman eat dots. first check to see if where pacman moves, there is a dot
+  if (gameBoard.objectExist(pacman.pos, OBJECT_TYPE.DOT)) {
+    //remove the dot from the gameboard and decrease the dotcount
+    gameBoard.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
+    gameBoard.dotCount--;
+
+    //give 10 points for eating a dot
+    score += 10;
+  }
+
+  //show score on scoreboard
+  scoreTable.innerHTML = score;
 }
 
 //function is ran when start button is pressed
@@ -74,7 +88,7 @@ function startGame() {
     pacman.handleKeyInput(e, gameBoard.objectExist.bind(gameBoard))
   );
 
-  // Gameloop, start the interval that will run the game loop function
+  // Gameloop, start the interval that will run the game loop function, run gameLoop every 80ms
   timer = setInterval(() => gameLoop(pacman), GLOBAL_SPEED);
 }
 

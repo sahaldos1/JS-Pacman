@@ -71,7 +71,7 @@ class GameBoard {
       this.DOMGrid.appendChild(div);
       this.grid.push(div);
 
-      // Add dots
+      // Add dots, keep track of the number of dots
       if (CLASS_LIST[square] === OBJECT_TYPE.DOT) this.dotCount++;
     });
   }

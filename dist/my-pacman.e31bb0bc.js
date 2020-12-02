@@ -840,7 +840,7 @@ var GameBoard = /*#__PURE__*/function () {
 
         _this.DOMGrid.appendChild(div);
 
-        _this.grid.push(div); // Add dots
+        _this.grid.push(div); // Add dots, keep track of the number of dots
 
 
         if (_basics.CLASS_LIST[square] === _basics.OBJECT_TYPE.DOT) _this.dotCount++;
@@ -874,28 +874,36 @@ var GameBoard = /*#__PURE__*/function () {
     key: "rotateDiv",
     value: function rotateDiv(pos, deg) {
       this.grid[pos].style.transform = "rotate(".concat(deg, "deg)");
-    }
+    } //method to move characters
+
   }, {
     key: "moveCharacter",
     value: function moveCharacter(character) {
+      //make sure the character is ready to move, using the characters should move method
       if (character.shouldMove()) {
+        //from this gameboard class we pass in the objectexist method so it can be used in the pacman class. That method in the pacman/character class then returns the nextmovePos and direction. So the nextmovepos and direction here are gotten from using the return values of the character's getNextMove method.
         var _character$getNextMov = character.getNextMove(this.objectExist.bind(this)),
             nextMovePos = _character$getNextMov.nextMovePos,
-            direction = _character$getNextMov.direction;
+            direction = _character$getNextMov.direction; //do the same thing here with the characters makeMove method and classesToRemove and classesToAdd
+
 
         var _character$makeMove = character.makeMove(),
             classesToRemove = _character$makeMove.classesToRemove,
-            classesToAdd = _character$makeMove.classesToAdd;
+            classesToAdd = _character$makeMove.classesToAdd; //now we can use those values after having grabbed them from running the characters methods
+        //if the character has to be rotated and we want to change position
+
 
         if (character.rotation && nextMovePos !== character.pos) {
-          // Rotate
-          this.rotateDiv(nextMovePos, character.dir.rotation); // Rotate the previous div back
+          // Rotate the character's current location
+          this.rotateDiv(nextMovePos, character.dir.rotation); // Rotate the previous div back to normal, reset it basically
 
           this.rotateDiv(character.pos, 0);
-        }
+        } //move the character on the grid visually, first by removing it from its current spot and then adding it to where it is supposed to be
+
 
         this.removeObject(character.pos, classesToRemove);
-        this.addObject(nextMovePos, classesToAdd);
+        this.addObject(nextMovePos, classesToAdd); //set the characters new position
+
         character.setNewPos(nextMovePos, direction);
       }
     } //used to initialize class itself, can be called wihtout instantiating the class itself. we create an instance of the class and create the grid and then return the instance.
@@ -1096,10 +1104,23 @@ function getInstructions() {
       modal.style.display = "none";
     }
   };
-}
+} //game loop handles the movement of characters, it moves the character everytime it completes it's interval
+
 
 function gameLoop(pacman, ghosts) {
-  gameBoard.moveCharacter(pacman);
+  //move pacman
+  gameBoard.moveCharacter(pacman); //let pacman eat dots. first check to see if where pacman moves, there is a dot
+
+  if (gameBoard.objectExist(pacman.pos, _basics.OBJECT_TYPE.DOT)) {
+    //remove the dot from the gameboard and decrease the dotcount
+    gameBoard.removeObject(pacman.pos, [_basics.OBJECT_TYPE.DOT]);
+    gameBoard.dotCount--; //give 10 points for eating a dot
+
+    score += 10;
+  } //show score on scoreboard
+
+
+  scoreTable.innerHTML = score;
 } //function is ran when start button is pressed
 
 
@@ -1117,7 +1138,7 @@ function startGame() {
 
   document.addEventListener("keydown", function (e) {
     return pacman.handleKeyInput(e, gameBoard.objectExist.bind(gameBoard));
-  }); // Gameloop
+  }); // Gameloop, start the interval that will run the game loop function
 
   timer = setInterval(function () {
     return gameLoop(pacman);
@@ -1156,7 +1177,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49906" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50153" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

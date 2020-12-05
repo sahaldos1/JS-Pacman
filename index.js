@@ -21,7 +21,7 @@ const instructionButton = document.querySelector("#instructions-button");
 
 //Game constants
 const POWER_PILL_TIME = 10000; //ms
-const GLOBAL_SPEED = 90; //ms
+const GLOBAL_SPEED = 80; // speed for the gameloop, in ms
 const gameBoard = GameBoard.createGameBoard(gameGrid, LEVEL);
 
 //Initial setup
@@ -72,7 +72,9 @@ function checkCollision(pacman, ghosts) {
   }
 }
 
+//game loop handles the movement of characters, it executes everytime it completes it's interval
 function gameLoop(pacman, ghosts) {
+  //move pacman
   gameBoard.moveCharacter(pacman);
   checkCollision(pacman, ghosts);
 
@@ -81,11 +83,13 @@ function gameLoop(pacman, ghosts) {
   });
   checkCollision(pacman, ghosts);
 
-  //check if pacman eats a dot
+  //let pacman eat dots. first check to see if where pacman moves, there is a dot
   if (gameBoard.objectExist(pacman.pos, OBJECT_TYPE.DOT)) {
     playAudio(soundDot);
     gameBoard.removeObject(pacman.pos, [OBJECT_TYPE.DOT]);
     gameBoard.dotCount--;
+
+    //give 10 points for eating a dot
     score += 10;
   }
 
@@ -148,23 +152,26 @@ function getInstructions() {
   };
 }
 
+//function is ran when start button is pressed
 function startGame() {
   playAudio(soundGameStart);
+
+  //hide start and instructions button at start of game and reset previous values
   gameWin = false;
   powerPillActive = false;
   score = 0;
 
-  //hide start button at start of game and reset previous values
   startButton.classList.add("hide");
   instructionButton.classList.add("hide");
 
-  //create the game baord
+  //create the new game grid from the game board each time we start a new game
   gameBoard.createGrid(LEVEL);
 
-  //create and put pacman on the grid
+  //create pacman with a speed of two and put on the grid
   const pacman = new Pacman(2, 287);
   gameBoard.addObject(287, [OBJECT_TYPE.PACMAN]);
 
+  //add event listener for pacman so we can move him with our keyboard
   document.addEventListener("keydown", (e) =>
     pacman.handleKeyInput(e, gameBoard.objectExist)
   );
@@ -177,11 +184,12 @@ function startGame() {
     new Ghost(2, 251, randomMovement, OBJECT_TYPE.PINKY),
   ];
 
+  // Gameloop, start the interval that will run the game loop function, run gameLoop every 80ms
   timer = setInterval(() => gameLoop(pacman, ghosts), GLOBAL_SPEED);
 }
 
-//Initialize game
-
+//Initialize game when button is pressed
 startButton.addEventListener("click", startGame);
 
+//display instructions when instructions button is pressed
 instructionButton.addEventListener("click", getInstructions);

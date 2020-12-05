@@ -124,9 +124,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LEVEL = exports.CLASS_LIST = exports.OBJECT_TYPE = exports.DIRECTIONS = exports.CELL_SIZE = exports.GRID_SIZE = void 0;
-var GRID_SIZE = 20;
+//the amount of columns in the grid
+var GRID_SIZE = 20; //size of the cells in the grid in pixels
+
 exports.GRID_SIZE = GRID_SIZE;
-var CELL_SIZE = 20;
+var CELL_SIZE = 20; //directions corresponding to arrow keys, code is the key entered in, movement is the direction we move in, and rotation is how much pacman should rotate when key is pressed, pacman starts off facing right
+
 exports.CELL_SIZE = CELL_SIZE;
 var DIRECTIONS = {
   ArrowLeft: {
@@ -149,25 +152,27 @@ var DIRECTIONS = {
     movement: GRID_SIZE,
     rotation: 90
   }
-};
+}; //array to cover the various kinds of objects, used to set different classes for the divs in the game
+
 exports.DIRECTIONS = DIRECTIONS;
 var OBJECT_TYPE = {
-  BLANK: 'blank',
-  WALL: 'wall',
-  DOT: 'dot',
-  BLINKY: 'blinky',
-  PINKY: 'pinky',
-  INKY: 'inky',
-  CLYDE: 'clyde',
-  PILL: 'pill',
-  PACMAN: 'pacman',
-  GHOST: 'ghost',
-  SCARED: 'scared',
-  GHOSTLAIR: 'lair'
-}; // Lookup array for classes
+  BLANK: "blank",
+  WALL: "wall",
+  DOT: "dot",
+  BLINKY: "blinky",
+  PINKY: "pinky",
+  INKY: "inky",
+  CLYDE: "clyde",
+  PILL: "pill",
+  PACMAN: "pacman",
+  GHOST: "ghost",
+  SCARED: "scared",
+  GHOSTLAIR: "lair"
+}; // Lookup array for classes, only used when we create the grid
 
 exports.OBJECT_TYPE = OBJECT_TYPE;
-var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_TYPE.BLINKY, OBJECT_TYPE.PINKY, OBJECT_TYPE.INKY, OBJECT_TYPE.CLYDE, OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; // prettier-ignore
+var CLASS_LIST = [OBJECT_TYPE.BLANK, OBJECT_TYPE.WALL, OBJECT_TYPE.DOT, OBJECT_TYPE.BLINKY, OBJECT_TYPE.PINKY, OBJECT_TYPE.INKY, OBJECT_TYPE.CLYDE, OBJECT_TYPE.PILL, OBJECT_TYPE.PACMAN, OBJECT_TYPE.GHOSTLAIR]; //array that represents the gameboard/grid, the numbers correspond with the kind of object they are
+// prettier-ignore
 
 exports.CLASS_LIST = CLASS_LIST;
 var LEVEL = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 1, 0, 0, 0, 2, 2, 2, 1, 9, 9, 9, 9, 1, 2, 2, 2, 0, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 1, 9, 9, 9, 9, 1, 2, 1, 2, 1, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 2, 1, 2, 0, 0, 0, 0, 0, 0, 2, 1, 2, 1, 0, 0, 0, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2, 2, 2, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 7, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 7, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 1, 2, 1, 1, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -420,7 +425,8 @@ var GameBoard = /*#__PURE__*/function () {
       div.classList.add("game-status");
       div.innerHTML = "".concat(gameWin ? "WIN!" : "GAME OVER!");
       this.DOMGrid.appendChild(div);
-    }
+    } //method to create grid, called every time game starts. grid is the array of objects and the value at that index is the object at that index
+
   }, {
     key: "createGrid",
     value: function createGrid(level) {
@@ -428,27 +434,31 @@ var GameBoard = /*#__PURE__*/function () {
 
       this.dotCount = 0;
       this.grid = [];
-      this.DOMGrid.innerHTML = ""; // First set correct amount of columns based on Grid Size and Cell Size
+      this.DOMGrid.innerHTML = ""; // First set correct amount of columns based on Grid Size and the size of each cell is based on Cell Size
 
-      this.DOMGrid.style.cssText = "grid-template-columns: repeat(".concat(_setup.GRID_SIZE, ", ").concat(_setup.CELL_SIZE, "px);");
+      this.DOMGrid.style.cssText = "grid-template-columns: repeat(".concat(_setup.GRID_SIZE, ", ").concat(_setup.CELL_SIZE, "px);"); //loop through the gaemboard array, and create each element in the array
+
       level.forEach(function (square) {
-        var div = document.createElement("div");
+        var div = document.createElement("div"); //check value of current element and match it to classlist to get what object it's supposed to be
+
         div.classList.add("square", _setup.CLASS_LIST[square]);
         div.style.cssText = "width: ".concat(_setup.CELL_SIZE, "px; height: ").concat(_setup.CELL_SIZE, "px;");
 
         _this2.DOMGrid.appendChild(div);
 
-        _this2.grid.push(div); // Add dots
+        _this2.grid.push(div); // Add dots, keep track of the number of dots
 
 
         if (_setup.CLASS_LIST[square] === _setup.OBJECT_TYPE.DOT) _this2.dotCount++;
       });
-    }
+    } //takes the position and classes.
+
   }, {
     key: "addObject",
     value: function addObject(pos, classes) {
       var _this$grid$pos$classL;
 
+      //where in the grid we want to apply/add these classes/objects
       (_this$grid$pos$classL = this.grid[pos].classList).add.apply(_this$grid$pos$classL, (0, _toConsumableArray2.default)(classes));
     }
   }, {
@@ -456,40 +466,56 @@ var GameBoard = /*#__PURE__*/function () {
     value: function removeObject(pos, classes) {
       var _this$grid$pos$classL2;
 
+      //where in the grid we want to remove these classes/objects
       (_this$grid$pos$classL2 = this.grid[pos].classList).remove.apply(_this$grid$pos$classL2, (0, _toConsumableArray2.default)(classes));
-    } // Can have an arrow function here cause of this binding
+    } // checks to make sure an object exists at that current position
+    // Can have an arrow function here cause of this binding
 
   }, {
     key: "rotateDiv",
+    //used to rotate pacman on the grid, rotates at postion by the specified amount of degrees
     value: function rotateDiv(pos, deg) {
       this.grid[pos].style.transform = "rotate(".concat(deg, "deg)");
-    }
+    } //method to move characters
+
   }, {
     key: "moveCharacter",
     value: function moveCharacter(character) {
+      //make sure the character is ready to move, using the characters should move method
       if (character.shouldMove()) {
+        //from this gameboard class we pass in the objectexist method so it can be used in the pacman class. That method in the pacman/character class then returns the nextmovePos and direction. So the nextmovepos and direction here are gotten from using the return values of the character's getNextMove method.
         var _character$getNextMov = character.getNextMove(this.objectExist),
             nextMovePos = _character$getNextMov.nextMovePos,
-            direction = _character$getNextMov.direction;
+            direction = _character$getNextMov.direction; //do the same thing here with the characters makeMove method and classesToRemove and classesToAdd
+
 
         var _character$makeMove = character.makeMove(),
             classesToRemove = _character$makeMove.classesToRemove,
-            classesToAdd = _character$makeMove.classesToAdd;
+            classesToAdd = _character$makeMove.classesToAdd; //now we can use those values after having grabbed them from running the characters methods
+        //if the character has to be rotated and we want to change position
+
 
         if (character.rotation && nextMovePos !== character.pos) {
-          this.rotateDiv(nextMovePos, character.dir.rotation);
+          // Rotate the character's current location
+          this.rotateDiv(nextMovePos, character.dir.rotation); // Rotate the previous div back to normal, reset it basically
+
           this.rotateDiv(character.pos, 0);
-        }
+        } //move the character on the grid visually, first by removing it from its current spot and then adding it to where it is supposed to be
+
 
         this.removeObject(character.pos, classesToRemove);
-        this.addObject(nextMovePos, classesToAdd);
+        this.addObject(nextMovePos, classesToAdd); //set the characters new position
+
         character.setNewPos(nextMovePos, direction);
       }
-    }
+    } //used to initialize class itself, can be called wihtout instantiating the class itself. we create an instance of the class and create the grid and then return the instance.
+
   }], [{
     key: "createGameBoard",
     value: function createGameBoard(DOMGrid, level) {
-      var board = new this(DOMGrid);
+      //creating the empty gameboard using the previously defined constructor
+      var board = new this(DOMGrid); //populate gameboard with the hardcoded array passed in from basics
+
       board.createGrid(level);
       return board;
     }
@@ -516,6 +542,7 @@ var _setup = require("./setup");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Pacman = /*#__PURE__*/function () {
+  //timer is after how long pacman is rendered and controls the speed of pacman
   function Pacman(speed, startPos) {
     (0, _classCallCheck2.default)(this, Pacman);
     this.pos = startPos;
@@ -524,14 +551,17 @@ var Pacman = /*#__PURE__*/function () {
     this.timer = 0;
     this.powerPill = false;
     this.rotation = true;
-  }
+  } //check if  pacman is ready to move or not
+
 
   (0, _createClass2.default)(Pacman, [{
     key: "shouldMove",
     value: function shouldMove() {
+      // Don't move before a key is pressed
       if (!this.dir) {
         return false;
-      }
+      } //counts from the timer to the speed passed, if the timer equals the speed passed in then the timer resets and pacman can move. This controls how fast pacman will be rendered
+
 
       if (this.timer === this.speed) {
         this.timer = 0;
@@ -539,15 +569,19 @@ var Pacman = /*#__PURE__*/function () {
       }
 
       this.timer++;
-    }
+    } //object exist from gameboard passed in
+
   }, {
     key: "getNextMove",
     value: function getNextMove(objectExist) {
-      var nextMovePos = this.pos + this.dir.movement;
+      //define next position as being current position of pacman plus the movement value of the key pressed
+      var nextMovePos = this.pos + this.dir.movement; // Do we collide with a wall or the ghost lair?
 
       if (objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL) || objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL)) {
+        //then we don't move
         nextMovePos = this.pos;
-      }
+      } //otherwise we move, return next move position
+
 
       return {
         nextMovePos: nextMovePos,
@@ -557,30 +591,36 @@ var Pacman = /*#__PURE__*/function () {
   }, {
     key: "makeMove",
     value: function makeMove() {
+      //remove pacman from current positon and add him to the new postion
       var classesToRemove = [_setup.OBJECT_TYPE.PACMAN];
       var classesToAdd = [_setup.OBJECT_TYPE.PACMAN];
       return {
         classesToAdd: classesToAdd,
         classesToRemove: classesToRemove
       };
-    }
+    } //set new positon of pacman with the next move position
+
   }, {
     key: "setNewPos",
     value: function setNewPos(nextMovePos) {
       this.pos = nextMovePos;
-    }
+    } //take in event and object exists
+
   }, {
     key: "handleKeyInput",
     value: function handleKeyInput(e, objectExist) {
-      var dir;
+      var dir; //check what keys are pressed, if keys are up down left right
 
       if (e.keyCode >= 37 && e.keyCode <= 40) {
+        //set direction as the key entered
         dir = _setup.DIRECTIONS[e.key];
       } else {
+        //otherwise nothing
         return;
-      }
+      } //make pacman keep moving in the direction selected unless he runs into a wall or ghost lair
 
-      var nextMovePos = this.pos + dir.movement;
+
+      var nextMovePos = this.pos + dir.movement; //if he does, we return nothing and he stops
 
       if (objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL) || objectExist(nextMovePos, _setup.OBJECT_TYPE.GHOSTLAIR)) {
         return;
@@ -641,7 +681,7 @@ var instructionButton = document.querySelector("#instructions-button"); //Game c
 
 var POWER_PILL_TIME = 10000; //ms
 
-var GLOBAL_SPEED = 90; //ms
+var GLOBAL_SPEED = 80; // speed for the gameloop, in ms
 
 var gameBoard = _GameBoard.default.createGameBoard(gameGrid, _setup.LEVEL); //Initial setup
 
@@ -685,20 +725,23 @@ function checkCollision(pacman, ghosts) {
       gameOver(pacman, gameGrid);
     }
   }
-}
+} //game loop handles the movement of characters, it executes everytime it completes it's interval
+
 
 function gameLoop(pacman, ghosts) {
+  //move pacman
   gameBoard.moveCharacter(pacman);
   checkCollision(pacman, ghosts);
   ghosts.forEach(function (ghost) {
     gameBoard.moveCharacter(ghost);
   });
-  checkCollision(pacman, ghosts); //check if pacman eats a dot
+  checkCollision(pacman, ghosts); //let pacman eat dots. first check to see if where pacman moves, there is a dot
 
   if (gameBoard.objectExist(pacman.pos, _setup.OBJECT_TYPE.DOT)) {
     playAudio(_munch.default);
     gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.DOT]);
-    gameBoard.dotCount--;
+    gameBoard.dotCount--; //give 10 points for eating a dot
+
     score += 10;
   } //check if pacman eats a powerPill
 
@@ -755,33 +798,37 @@ function getInstructions() {
       modal.style.display = "none";
     }
   };
-}
+} //function is ran when start button is pressed
+
 
 function startGame() {
-  playAudio(_game_start.default);
+  playAudio(_game_start.default); //hide start and instructions button at start of game and reset previous values
+
   gameWin = false;
   powerPillActive = false;
-  score = 0; //hide start button at start of game and reset previous values
-
+  score = 0;
   startButton.classList.add("hide");
-  instructionButton.classList.add("hide"); //create the game baord
+  instructionButton.classList.add("hide"); //create the new game grid from the game board each time we start a new game
 
-  gameBoard.createGrid(_setup.LEVEL); //create and put pacman on the grid
+  gameBoard.createGrid(_setup.LEVEL); //create pacman with a speed of two and put on the grid
 
   var pacman = new _Pacman.default(2, 287);
-  gameBoard.addObject(287, [_setup.OBJECT_TYPE.PACMAN]);
+  gameBoard.addObject(287, [_setup.OBJECT_TYPE.PACMAN]); //add event listener for pacman so we can move him with our keyboard
+
   document.addEventListener("keydown", function (e) {
     return pacman.handleKeyInput(e, gameBoard.objectExist);
   }); //create ghosts
 
-  var ghosts = [new _Ghost.default(5, 188, _Ghost.randomMovement, _setup.OBJECT_TYPE.BLINKY), new _Ghost.default(4, 209, _Ghost.randomMovement, _setup.OBJECT_TYPE.INKY), new _Ghost.default(3, 230, _Ghost.randomMovement, _setup.OBJECT_TYPE.CLYDE), new _Ghost.default(2, 251, _Ghost.randomMovement, _setup.OBJECT_TYPE.PINKY)];
+  var ghosts = [new _Ghost.default(5, 188, _Ghost.randomMovement, _setup.OBJECT_TYPE.BLINKY), new _Ghost.default(4, 209, _Ghost.randomMovement, _setup.OBJECT_TYPE.INKY), new _Ghost.default(3, 230, _Ghost.randomMovement, _setup.OBJECT_TYPE.CLYDE), new _Ghost.default(2, 251, _Ghost.randomMovement, _setup.OBJECT_TYPE.PINKY)]; // Gameloop, start the interval that will run the game loop function, run gameLoop every 80ms
+
   timer = setInterval(function () {
     return gameLoop(pacman, ghosts);
   }, GLOBAL_SPEED);
-} //Initialize game
+} //Initialize game when button is pressed
 
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", startGame); //display instructions when instructions button is pressed
+
 instructionButton.addEventListener("click", getInstructions);
 },{"./setup":"setup.js","./Ghost":"Ghost.js","./GameBoard":"GameBoard.js","./Pacman":"Pacman.js","./sounds/munch.wav":"sounds/munch.wav","./sounds/pill.wav":"sounds/pill.wav","./sounds/game_start.wav":"sounds/game_start.wav","./sounds/death.wav":"sounds/death.wav","./sounds/eat_ghost.wav":"sounds/eat_ghost.wav"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -811,7 +858,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50431" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51407" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

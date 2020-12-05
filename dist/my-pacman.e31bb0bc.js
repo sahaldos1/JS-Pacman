@@ -282,6 +282,7 @@ var _setup = require("./setup");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Ghost = /*#__PURE__*/function () {
+  //movement is a move function we can give class, potential for multiple move algorithms per ghost, and name for each ghost
   function Ghost() {
     var speed = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 5;
     var startPos = arguments.length > 1 ? arguments[1] : undefined;
@@ -290,29 +291,33 @@ var Ghost = /*#__PURE__*/function () {
     (0, _classCallCheck2.default)(this, Ghost);
     this.name = name;
     this.movement = movement;
-    this.startPos = startPos;
+    this.startPos = startPos; //send ghosts back here after pacman eats them
+
     this.pos = startPos;
     this.dir = _setup.DIRECTIONS.ArrowRight;
     this.speed = speed;
     this.timer = 0;
     this.isScared = false;
     this.rotation = false;
-  }
+  } //methods are mostly the same as those of the pacman class
+
 
   (0, _createClass2.default)(Ghost, [{
     key: "shouldMove",
     value: function shouldMove() {
+      //counts from the timer to the speed passed, if the timer equals the speed passed in then the timer resets and pacman can move. This controls how fast the ghosts will be rendered/move
       if (this.timer === this.speed) {
         this.timer = 0;
         return true;
       }
 
       this.timer++;
-    }
+    } //object exist from gameboard passed in
+
   }, {
     key: "getNextMove",
     value: function getNextMove(objectExist) {
-      // Call move algoritm here
+      // Call movement function here and get pos and dir from the move function. Doesn't matter what the move function is as long as it returns nextMovePos and direction
       var _this$movement = this.movement(this.pos, this.dir, objectExist),
           nextMovePos = _this$movement.nextMovePos,
           direction = _this$movement.direction;
@@ -325,14 +330,17 @@ var Ghost = /*#__PURE__*/function () {
   }, {
     key: "makeMove",
     value: function makeMove() {
+      //remove ghost from current positon and add him to the new postion, we want to remove the ghost itself, its scared state and the name because name is it's identifier
       var classesToRemove = [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, this.name];
-      var classesToAdd = [_setup.OBJECT_TYPE.GHOST, this.name];
+      var classesToAdd = [_setup.OBJECT_TYPE.GHOST, this.name]; //if the ghost is scared then we also add in the scared property
+
       if (this.isScared) classesToAdd = [].concat((0, _toConsumableArray2.default)(classesToAdd), [_setup.OBJECT_TYPE.SCARED]);
       return {
         classesToRemove: classesToRemove,
         classesToAdd: classesToAdd
       };
-    }
+    } //set new positon of ghosts with the next move position and direction it's going in
+
   }, {
     key: "setNewPos",
     value: function setNewPos(nextMovePos, direction) {
@@ -343,21 +351,21 @@ var Ghost = /*#__PURE__*/function () {
   return Ghost;
 }();
 
-var _default = Ghost; // Primitive random movement.
+var _default = Ghost; // random movement function for the ghosts, can define more move functions with other traits if wanted
 
 exports.default = _default;
 
 function randomMovement(position, direction, objectExist) {
   var dir = direction;
-  var nextMovePos = position + dir.movement; // Create an array from the diretions objects keys
+  var nextMovePos = position + dir.movement; // Create an array of all possible directions
 
-  var keys = Object.keys(_setup.DIRECTIONS);
+  var keys = Object.keys(_setup.DIRECTIONS); //ghost keeps moving unless it runs into a wall or a ghost, in which case it randomly changes its direction
 
   while (objectExist(nextMovePos, _setup.OBJECT_TYPE.WALL) || objectExist(nextMovePos, _setup.OBJECT_TYPE.GHOST)) {
-    // Get a random key from that array
-    var key = keys[Math.floor(Math.random() * keys.length)]; // Set the new direction
+    // Get a random direction from that array
+    var key = keys[Math.floor(Math.random() * keys.length)]; // Set that as the new direction
 
-    dir = _setup.DIRECTIONS[key]; // Set the next move
+    dir = _setup.DIRECTIONS[key]; // Set the next move position
 
     nextMovePos = position + dir.movement;
   }
@@ -690,38 +698,52 @@ var score = 0;
 var timer = null;
 var gameWin = false;
 var powerPillActive = false;
-var powerPillTimer = null; // --- AUDIO --- //
+var powerPillTimer = null; //function to play sound effects
 
 function playAudio(audio) {
   var soundEffect = new Audio(audio);
   soundEffect.play();
-}
+} //function for when pacman dies
 
-function gameOver(pacman, grid) {
-  playAudio(_death.default);
+
+function gameOver(pacman) {
+  playAudio(_death.default); //remove the event listener we created for controlling pacman
+
   document.removeEventListener("keydown", function (e) {
     return pacman.handleKeyInput(e, gameBoard.objectExist);
-  });
-  gameBoard.showGameStatus(gameWin);
-  clearInterval(timer);
+  }); //show the game win screen
+
+  gameBoard.showGameStatus(gameWin); //stop the game loops
+
+  clearInterval(timer); //show the buttons again
+
   startButton.classList.remove("hide");
   instructionButton.classList.remove("hide");
-}
+} //function for when pacman and a ghost run into each other
+
 
 function checkCollision(pacman, ghosts) {
+  //get the ghost pacman collided with
   var collidedGhost = ghosts.find(function (ghost) {
     return pacman.pos === ghost.pos;
-  });
+  }); //if collided
 
   if (collidedGhost) {
+    //if pacman has eaten a power pill he will eat the ghost
     if (pacman.powerPill) {
-      playAudio(_eat_ghost.default);
-      gameBoard.removeObject(collidedGhost.pos, [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, collidedGhost.name]);
-      collidedGhost.pos = collidedGhost.startPos;
+      playAudio(_eat_ghost.default); //so we remove the ghost from that position along with it's scared property so it resets, and remove the name
+
+      gameBoard.removeObject(collidedGhost.pos, [_setup.OBJECT_TYPE.GHOST, _setup.OBJECT_TYPE.SCARED, collidedGhost.name]); //reset the position so the ghost goes back to the lair
+
+      collidedGhost.pos = collidedGhost.startPos; //give 100 points for eating the ghost
+
       score += 100;
     } else {
-      gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PACMAN]);
-      gameBoard.rotateDiv(pacman.pos, 0);
+      //otherwise if the ghost isn't scared pacman dies and we remove him
+      gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PACMAN]); //rotate the specific div back to neutral so it doesn't rotate any ghost that moves to that position
+
+      gameBoard.rotateDiv(pacman.pos, 0); //call game over function
+
       gameOver(pacman, gameGrid);
     }
   }
@@ -730,11 +752,14 @@ function checkCollision(pacman, ghosts) {
 
 function gameLoop(pacman, ghosts) {
   //move pacman
-  gameBoard.moveCharacter(pacman);
-  checkCollision(pacman, ghosts);
+  gameBoard.moveCharacter(pacman); //check and see if there is a collission after pacman moves
+
+  checkCollision(pacman, ghosts); //move ghosts
+
   ghosts.forEach(function (ghost) {
     gameBoard.moveCharacter(ghost);
-  });
+  }); //check if there's a collission after a ghost moves, checked twice because ghosts and pacman don't move in sync
+
   checkCollision(pacman, ghosts); //let pacman eat dots. first check to see if where pacman moves, there is a dot
 
   if (gameBoard.objectExist(pacman.pos, _setup.OBJECT_TYPE.DOT)) {
@@ -743,27 +768,33 @@ function gameLoop(pacman, ghosts) {
     gameBoard.dotCount--; //give 10 points for eating a dot
 
     score += 10;
-  } //check if pacman eats a powerPill
+  } //check if pacman eats a powerPill, if a powerpill exists at pacmans position
 
 
   if (gameBoard.objectExist(pacman.pos, _setup.OBJECT_TYPE.PILL)) {
-    playAudio(_pill.default);
-    gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]);
+    playAudio(_pill.default); //remove the powerpill
+
+    gameBoard.removeObject(pacman.pos, [_setup.OBJECT_TYPE.PILL]); //set pacmans powerpill status as true and award him 50 points
+
     pacman.powerPill = true;
-    score += 50;
+    score += 50; //clear the powerpill effect after ten seconds, first we clear out the old timer if we already have a powerpill active then set the timer
+
     clearTimeout(powerPillTimer);
     powerPillTimer = setTimeout(function () {
       return pacman.powerPill = false;
     }, POWER_PILL_TIME);
-  } // Change ghosts into scare mode if powerpill eaten
+  } // Change ghosts into scared mode if powerpill eaten
+  //if one is true the other is false
 
 
   if (pacman.powerPill !== powerPillActive) {
-    powerPillActive = pacman.powerPill;
+    //then we have powerpillactive status be what it's supposed to be, if powerpill is true then it's true etc
+    powerPillActive = pacman.powerPill; //make each ghost scared depending on whether the powerpill is active or not
+
     ghosts.forEach(function (ghost) {
       return ghost.isScared = pacman.powerPill;
     });
-  } //Check if all dots have been eaten
+  } //Check if all dots have been eaten, if they have then the game is won and game over is called
 
 
   if (gameBoard.dotCount === 0) {
@@ -817,7 +848,7 @@ function startGame() {
 
   document.addEventListener("keydown", function (e) {
     return pacman.handleKeyInput(e, gameBoard.objectExist);
-  }); //create ghosts
+  }); //create ghosts at different positions and different speeds
 
   var ghosts = [new _Ghost.default(5, 188, _Ghost.randomMovement, _setup.OBJECT_TYPE.BLINKY), new _Ghost.default(4, 209, _Ghost.randomMovement, _setup.OBJECT_TYPE.INKY), new _Ghost.default(3, 230, _Ghost.randomMovement, _setup.OBJECT_TYPE.CLYDE), new _Ghost.default(2, 251, _Ghost.randomMovement, _setup.OBJECT_TYPE.PINKY)]; // Gameloop, start the interval that will run the game loop function, run gameLoop every 80ms
 
@@ -858,7 +889,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51407" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51566" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
